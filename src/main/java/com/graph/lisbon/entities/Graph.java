@@ -86,27 +86,9 @@ public class Graph {
      * @return
      */
     public Map<Node, Double> getNeighboursWithWeights(Node node) {
-        Map<Node, Double> weightedNeighbors = new LinkedHashMap<>();
-        for (Edge edge : this.adj.get(node)) {
-            weightedNeighbors.put(edge.getTo(), edge.getWeight());
-        }
-        return sortNeighborsByWeights(weightedNeighbors);
-    }
-
-    /**
-     * Sort the neighbours of the node by their weight in an ascending way
-     * @param neighbors
-     * @return
-     */
-    private Map<Node, Double> sortNeighborsByWeights(Map<Node, Double> neighbors) {
-        List<Map.Entry<Node, Double>> list = new ArrayList<>(neighbors.entrySet());
-        list.sort(Map.Entry.comparingByValue());
-
-        Map<Node, Double> result = new LinkedHashMap<>();
-        for (Map.Entry<Node, Double> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
+        return this.adj.get(node).stream()
+            .sorted((e1, e2) -> Double.compare(e1.getWeight(), e2.getWeight()))
+            .collect(Collectors.toMap(Edge::getTo, Edge::getWeight));
     }
 
     /**
@@ -131,7 +113,7 @@ public class Graph {
         for (Pair<Node, Node> pair : allPairsOfNodes) {
             List<Node> shortestPath;
             if (useDijkstra) {
-                dijkstra.DikstraSP(this, pair.getFirst());
+                dijkstra.dikstraSP(this, pair.getFirst());
                 shortestPath = dijkstra.getShortestPath(pair.getSecond());
             } else {
                 bfsShortestPaths.bfs(this, pair.getFirst());
@@ -164,7 +146,7 @@ public class Graph {
         for (Pair<Node, Node> pair : allPairsOfNodes) {
             List<Node> shortestPath;
             if (useDijkstra) {
-                dijkstra.DikstraSP(this, pair.getFirst());
+                dijkstra.dikstraSP(this, pair.getFirst());
                 shortestPath = dijkstra.getShortestPath(pair.getSecond());
             } else {
                 bfsShortestPaths.bfs(this, pair.getFirst());
@@ -321,9 +303,9 @@ public class Graph {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (Map.Entry<Node, List<Edge>> entry : this.adj.entrySet()) {
-            result.append(entry.getKey().getId()).append(" (head)");
+            result.append(entry.getKey().getId()).append(" (head): ");
             for (Edge edge : entry.getValue()) {
-                result.append(" => ").append(edge.getTo().getId()).append(" (").append(edge.getWeight()).append(")");
+                result.append(edge.getTo().getId()).append(" (").append(edge.getWeight()).append(")").append(", ");
             }
             result.append("\n");
         }

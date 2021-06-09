@@ -15,7 +15,7 @@ public class Dijkstra {
      * @param graph
      * @param start
      */
-    public void DikstraSP(Graph graph, Node start) {
+    public void dikstraSP(Graph graph, Node start) {
         this.marked = new HashMap<>();
         this.previous = new HashMap<>();
         this.distance = new HashMap<>();
