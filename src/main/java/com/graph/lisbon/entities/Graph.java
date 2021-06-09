@@ -7,6 +7,7 @@ import org.jgrapht.alg.util.Pair;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Data
 public class Graph {
@@ -76,11 +77,7 @@ public class Graph {
      * @return
      */
     public List<Node> getNeighbours(Node node) {
-        List<Node> neighbors = new ArrayList<>();
-        for (Edge edge : this.adj.get(node)) {
-            neighbors.add(edge.getTo());
-        }
-        return neighbors;
+        return this.adj.get(node).stream().map(Edge::getTo).collect(Collectors.toList());
     }
 
     /**

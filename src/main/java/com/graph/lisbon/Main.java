@@ -27,7 +27,7 @@ public class Main {
         Node target = graph.findNodeById("M27");
         bfsSPs.bfs(graph, start);
         System.out.println("========== BFS SHORTEST PATH ==========\n\n" +
-                "The BFS of the unweighted graph allows use to find the shortest path between " + start.getId() + " and " + target.getId() + ":\n");
+                "The BFS of the unweighted graph allows us to find the shortest path between " + start.getId() + " and " + target.getId() + ":\n");
         bfsSPs.printShortestPath(bfsSPs.getShortestPath(target));
         System.out.println("\n");
 

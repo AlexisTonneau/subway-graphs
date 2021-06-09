@@ -5,7 +5,6 @@ import com.graph.lisbon.entities.Node;
 import lombok.AllArgsConstructor;
 
 import java.io.*;
-import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -69,24 +68,23 @@ public class GtfsParser {
             File file = new File(this.path + "stop_times.txt");
             Scanner myReader = new Scanner(file);
             myReader.nextLine(); // Skip column names
-            String[] currentLine = null;
+            String[] previousLine = new String[0];
             if (myReader.hasNextLine())
-                currentLine = myReader.nextLine().split(",");
+                previousLine = myReader.nextLine().split(",");
             while (myReader.hasNextLine()) {
-                String[] nextLine = myReader.nextLine().split(",");
-                if (currentLine[INDEX_TRIP_ID].equals(nextLine[INDEX_TRIP_ID]) &&
-                    parseInt(currentLine[INDEX_STOP_SEQUENCE]) == (parseInt(nextLine[INDEX_STOP_SEQUENCE] + 1))) {
-                    Node from = graph.findNodeById(currentLine[INDEX_STOP_ID]);
-                    Node to = graph.findNodeById(nextLine[INDEX_STOP_ID]);
+                String[] currentLine = myReader.nextLine().split(",");
+                if (previousLine[INDEX_TRIP_ID].equals(currentLine[INDEX_TRIP_ID]) &&   //Check if it's same trip and the stop follows the previous one
+                    parseInt(previousLine[INDEX_STOP_SEQUENCE]) + 1 == (parseInt(currentLine[INDEX_STOP_SEQUENCE]))) {
+                    Node from = graph.findNodeById(previousLine[INDEX_STOP_ID]);
+                    Node to = graph.findNodeById(currentLine[INDEX_STOP_ID]);
                     if (isWeighted) {
                         weight = weightCalculation(from, to);
                     }
                     graph.addEdge(from, to, weight);
                     graph.addEdge(to, from, weight);
                     graph.setM(graph.getM() + 1);
-                } else {
-                    currentLine = nextLine;
                 }
+                previousLine = currentLine;
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -94,30 +92,6 @@ public class GtfsParser {
             e.printStackTrace();
         }
     }
-
-
-    /*
-    double weight = 0;
-        try {
-            File file = new File(this.path + "stop_times.txt");
-            Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
-                String[] splitLine = myReader.nextLine().split(",");
-                Node from = graph.findNodeById(splitLine[0]);
-                Node to = graph.findNodeById(splitLine[1]);
-                if (isWeighted) {
-                    weight = weightCalculation(from, to);
-                }
-                graph.addEdge(from, to, weight);
-                graph.addEdge(to, from, weight);
-                graph.setM(graph.getM() + 1);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-     */
 
     /**
      * Return the weight of the edge between the two input nodes
