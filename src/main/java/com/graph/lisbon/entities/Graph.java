@@ -225,5 +225,9 @@ public class Graph {
         }
         return result.toString();
     }
+
+    public static double getPathCost(List<Edge> e) {
+        return e.stream().mapToDouble(edge -> edge.getWeight()).sum();
+    }
 }
 

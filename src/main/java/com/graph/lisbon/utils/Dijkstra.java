@@ -1,5 +1,6 @@
 package com.graph.lisbon.utils;
 
+import com.graph.lisbon.entities.Edge;
 import com.graph.lisbon.entities.Graph;
 import com.graph.lisbon.entities.Node;
 
