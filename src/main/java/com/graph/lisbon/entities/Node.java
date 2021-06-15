@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Node {
-    private String id;      //Id of the node
-    private double lat;     //Latitude of the node
-    private double lon;     //Longitude of the node
+    private String id;
+    private double lat;
+    private double lon;
 }

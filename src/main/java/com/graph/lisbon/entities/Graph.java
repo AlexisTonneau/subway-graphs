@@ -3,6 +3,7 @@ package com.graph.lisbon.entities;
 import com.graph.lisbon.utils.BFSShortestPaths;
 import com.graph.lisbon.utils.Dijkstra;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jgrapht.alg.util.Pair;
 
 import java.util.*;
@@ -10,19 +11,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class Graph {
-    private int N;                      // number of nodes
-    private int M;                      // number of edges
-    Map<Node, List<Edge>> adj;          // adjency list of our edges
-
-    /**
-     * Constructor of the Graph
-     */
-    public Graph() {
-        this.N = 0;
-        this.M = 0;
-        this.adj = new HashMap<>();
-    }
+    private int N = 0;                // number of nodes
+    private int M = 0;                // number of edges
+    Map<Node, List<Edge>> adj = new HashMap<>();    // adjency list
 
     /**
      * Add a Node to adj
