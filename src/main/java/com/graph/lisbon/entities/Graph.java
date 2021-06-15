@@ -160,24 +160,18 @@ public class Graph {
         Map<Pair<Node, Node>, List<Node>> allShortestPaths = this.findAllShortestPaths(useDijkstra);
         Map<Pair<Node, Node>, Integer> allEdgeBetweennesses = new HashMap<>();
 
-        for (Map.Entry<Node, List<Edge>> entry : this.adj.entrySet()) {
-            for (Edge edge : entry.getValue()) {
-                if (!allEdgeBetweennesses.containsKey(new Pair<>(entry.getKey(), edge.getTo())) && !allEdgeBetweennesses.containsKey(new Pair<>(edge.getTo(), entry.getKey())) && entry.getKey() != edge.getTo()) {
-                    allEdgeBetweennesses.put(new Pair<>(entry.getKey(), edge.getTo()), 0);
-                }
-            }
-        }
-
-        for (Map.Entry<Pair<Node, Node>, List<Node>> entry : allShortestPaths.entrySet()) {
-            if (entry.getValue() != null) {
-
+        // get number of times the path between two nodes is used
+        for (Map.Entry<Pair<Node, Node>, List<Node>> entry : allShortestPaths.entrySet()){
+            if (Objects.nonNull(entry.getValue())) {
                 for (int i = 0; i < entry.getValue().size() - 1; i++) {
                     if (allEdgeBetweennesses.containsKey(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)))) {
-                        Integer currentBetweeness = allEdgeBetweennesses.get(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)));
+                        int currentBetweeness = allEdgeBetweennesses.get(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)));
                         allEdgeBetweennesses.put(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)), currentBetweeness + 1);
                     } else if (allEdgeBetweennesses.containsKey(new Pair<>(entry.getValue().get(i + 1), entry.getValue().get(i)))) {
-                        Integer currentBetweeness = allEdgeBetweennesses.get(new Pair<>(entry.getValue().get(i + 1), entry.getValue().get(i)));
-                        allEdgeBetweennesses.put(new Pair<>(entry.getValue().get(i + 1), entry.getValue().get(i)), currentBetweeness + 1);
+                        int currentBetweeness = allEdgeBetweennesses.get(new Pair<>(entry.getValue().get(i + 1), entry.getValue().get(i)));
+                        allEdgeBetweennesses.put(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)), currentBetweeness + 1);
+                    } else {
+                        allEdgeBetweennesses.put(new Pair<>(entry.getValue().get(i), entry.getValue().get(i + 1)), 0);
                     }
                 }
             }
