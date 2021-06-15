@@ -119,39 +119,6 @@ public class Graph {
     }
 
     /**
-     * Give all the shortest path that begin with a given node
-     * @param start
-     * @param useDijkstra
-     * @return
-     */
-    public Map<Pair<Node, Node>, List<Node>> findAllShortestPathsFromStartNode(Node start, boolean useDijkstra) {
-        List<Pair<Node, Node>> allPairsOfNodes = new ArrayList<>();
-        Map<Pair<Node, Node>, List<Node>> allPairsWithSP = new HashMap<>();
-        Dijkstra dijkstra = new Dijkstra();
-        BFSShortestPaths bfsShortestPaths = new BFSShortestPaths();
-
-        for (Node node : this.adj.keySet()) {
-            if (!allPairsOfNodes.contains(new Pair<>(start, node)) && !allPairsOfNodes.contains(new Pair<>(node, start)) && start != node) {
-                allPairsOfNodes.add(new Pair<>(start, node));
-            }
-        }
-
-        for (Pair<Node, Node> pair : allPairsOfNodes) {
-            List<Node> shortestPath;
-            if (useDijkstra) {
-                dijkstra.dikstraSP(this, pair.getFirst());
-                shortestPath = dijkstra.getShortestPath(pair.getSecond());
-            } else {
-                bfsShortestPaths.bfs(this, pair.getFirst());
-                shortestPath = bfsShortestPaths.getShortestPath(pair.getSecond());
-            }
-            allPairsWithSP.put(pair, shortestPath);
-        }
-
-        return allPairsWithSP;
-    }
-
-    /**
      * Give all the edges betweenesses
      * @param useDijkstra
      * @return
