@@ -2,9 +2,11 @@ package com.graph.lisbon.utils;
 
 import com.graph.lisbon.entities.Graph;
 import com.graph.lisbon.entities.Node;
+import lombok.Getter;
 
 import java.util.*;
 
+@Getter
 public class BFSShortestPaths {
     private Map<Node, Boolean> marked;      //Mark if the node has been reached
     private Map<Node, Node> previous;       //The predecessor of the node

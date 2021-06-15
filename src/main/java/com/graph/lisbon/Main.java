@@ -6,6 +6,7 @@ import com.graph.lisbon.utils.BFSShortestPaths;
 import com.graph.lisbon.utils.Dijkstra;
 import com.graph.lisbon.utils.GtfsParser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -52,7 +53,7 @@ public class Main {
         int mawClusters = 3;
         System.out.println("========== CLUSTERING ==========\n\n" +
                 "We want " + mawClusters + " clusters :\n");
-        CopyOnWriteArrayList<List<Node>> clusters = graph.makeCluster(mawClusters, false);
+        List<List<Node>> clusters = graph.makeCluster(mawClusters, false);
         for (List<Node> cluster : clusters) {
             System.out.print("CLUSTER : ");
             for (Node node : cluster) {

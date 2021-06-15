@@ -210,59 +210,28 @@ public class Graph {
      * @param maxClusters useDijkstra
      * @return
      */
-    public CopyOnWriteArrayList<List<Node>> makeCluster(Integer maxClusters, boolean useDijkstra) {
-        CopyOnWriteArrayList<List<Node>> allClusters = new CopyOnWriteArrayList<>();
+    public List<List<Node>> makeCluster(Integer maxClusters, boolean useDijkstra) {
+        BFSShortestPaths bfsShortestPaths = new BFSShortestPaths();
+        List<List<Node>> allClusters = new ArrayList<>();
         List<Pair<Node, Node>> allRemovedEdges = new ArrayList<>();
 
         while (allClusters.size() < maxClusters && this.M > 1) {
             Map<Pair<Node, Node>, Integer> edgeBTW = getAllEdgesBetweennesses(useDijkstra);
-            List<Node> usedNodes = new ArrayList<>();
-            allClusters = new CopyOnWriteArrayList<>();
-
             Pair<Node, Node> edgeToRemove = edgeBTW.keySet().iterator().next();
             allRemovedEdges.add(edgeToRemove);
             deleteEdge(edgeToRemove);
 
-            for (Node startNode : adj.keySet()) {
-                if (!usedNodes.contains(startNode)) {
-                    for (Node targetNode : adj.keySet()) {
-                        if (!usedNodes.contains(targetNode)) {
-                            if (startNode != targetNode) {
+            List<Node> remainingNodes = new ArrayList<>(this.adj.keySet());
+            allClusters = new ArrayList<>();
 
-                                if (allClusters.size() < maxClusters) {
-                                    Map<Pair<Node, Node>, List<Node>> allSPs = this.findAllShortestPaths(useDijkstra);
-                                    Map<Pair<Node, Node>, List<Node>> allSPOfTargetNode = this.findAllShortestPathsFromStartNode(targetNode, useDijkstra);
-
-                                    Pair<Node, Node> ride = new Pair<>(startNode, targetNode);
-                                    if (Objects.isNull(allSPs.get(ride))) {             // If there is no SP between start and target
-                                            List<Node> newCluster = new ArrayList<>();
-                                            newCluster.add(targetNode);
-                                            usedNodes.add(targetNode);
-                                            for (Map.Entry<Pair<Node, Node>, List<Node>> entry : allSPOfTargetNode.entrySet()) {
-                                                if (Objects.nonNull(entry.getValue()) && !usedNodes.contains(entry.getKey().getSecond())) {
-                                                    newCluster.add(entry.getKey().getSecond());
-                                                    usedNodes.add(entry.getKey().getSecond());
-                                                }
-                                            }
-                                            allClusters.add(newCluster);
-                                    } else {                                    // If there is an SP between start and targetd
-                                        usedNodes.add(startNode);
-                                        List<Node> newCluster = new ArrayList<>();
-                                        newCluster.add(startNode);
-                                        Map<Pair<Node, Node>, List<Node>> allSPOfStart = findAllShortestPathsFromStartNode(startNode, useDijkstra);
-                                        for (Map.Entry<Pair<Node, Node>, List<Node>> entry : allSPOfStart.entrySet()) {
-                                            if (Objects.nonNull(entry.getValue()) && !usedNodes.contains(entry.getKey().getSecond())) {
-                                                newCluster.add(entry.getKey().getSecond());
-                                                usedNodes.add(entry.getKey().getSecond());
-                                            }
-                                        }
-                                        allClusters.add(newCluster);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            while (!remainingNodes.isEmpty()){
+                bfsShortestPaths.bfs(this, remainingNodes.get(0));
+                List<Node> nodesReached = bfsShortestPaths.getMarked().entrySet().stream()
+                    .filter(Map.Entry::getValue)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+                remainingNodes.removeAll(nodesReached);
+                allClusters.add(nodesReached);
             }
         }
         System.out.println("We deleted " + allRemovedEdges.size() + " edges to create the clusters : ");
