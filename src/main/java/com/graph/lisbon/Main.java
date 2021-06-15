@@ -52,15 +52,14 @@ public class Main {
         // Clustering
         int mawClusters = 3;
         System.out.println("========== CLUSTERING ==========\n\n" +
-                "We want " + mawClusters + " clusters :\n");
+                "Number of clusters: " + mawClusters + "\n");
         List<List<Node>> clusters = graph.makeCluster(mawClusters, false);
-        for (List<Node> cluster : clusters) {
-            System.out.print("CLUSTER : ");
-            for (Node node : cluster) {
+        for (int i = 0; i < clusters.size(); i++){
+            System.out.print("CLUSTER N°" + (i + 1) + " : ");
+            for (Node node : clusters.get(i)) {
                 System.out.print(node.getId() + " ");
             }
-            System.out.println("\nSize = " + cluster.size());
+            System.out.println("\nSize = " + clusters.get(i).size());
         }
-        System.out.println("NB OF CLUSTERS (TOTAL) = " + clusters.size());
     }
 }

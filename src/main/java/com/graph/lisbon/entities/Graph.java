@@ -178,6 +178,7 @@ public class Graph {
      * @return
      */
     public List<List<Node>> makeCluster(Integer maxClusters, boolean useDijkstra) {
+
         BFSShortestPaths bfsShortestPaths = new BFSShortestPaths();
         List<List<Node>> allClusters = new ArrayList<>();
         List<Pair<Node, Node>> allRemovedEdges = new ArrayList<>();
@@ -192,7 +193,7 @@ public class Graph {
             allClusters = new ArrayList<>();
 
             while (!remainingNodes.isEmpty()){
-                bfsShortestPaths.bfs(this, remainingNodes.get(0));
+                bfsShortestPaths.bfs(this, remainingNodes.get(0)); //get a random node
                 List<Node> nodesReached = bfsShortestPaths.getMarked().entrySet().stream()
                     .filter(Map.Entry::getValue)
                     .map(Map.Entry::getKey)
@@ -201,9 +202,9 @@ public class Graph {
                 allClusters.add(nodesReached);
             }
         }
-        System.out.println("We deleted " + allRemovedEdges.size() + " edges to create the clusters : ");
+        System.out.println("We have deleted " + allRemovedEdges.size() + " edges:");
         for (Pair<Node, Node> removeEdge : allRemovedEdges) {
-            System.out.print(removeEdge.getFirst().getId() + ":" + removeEdge.getSecond().getId() + " ");
+            System.out.print(removeEdge.getFirst().getId() + "->" + removeEdge.getSecond().getId() + " ");
         }
         System.out.println("\n");
         return allClusters;
