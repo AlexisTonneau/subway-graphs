@@ -185,14 +185,9 @@ public class Graph {
      * @return
      */
     private Map<Pair<Node, Node>, Integer> sortEdgeByBetweennesses(Map<Pair<Node, Node>, Integer> originalMap) {
-        List<Map.Entry<Pair<Node, Node>, Integer>> list = new ArrayList<>(originalMap.entrySet());
-        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-
-        Map<Pair<Node, Node>, Integer> result = new LinkedHashMap<>();
-        for (Map.Entry<Pair<Node, Node>, Integer> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
+        return originalMap.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
     /**
