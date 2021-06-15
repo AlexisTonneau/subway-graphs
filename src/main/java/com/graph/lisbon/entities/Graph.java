@@ -196,11 +196,12 @@ public class Graph {
      */
     public void deleteEdge(Pair<Node, Node> pair) {
         if (this.adj.containsKey(pair.getFirst())) {
-            this.adj.get(pair.getFirst()).removeIf(e -> e.getTo().getId().equals(pair.getSecond().getId()));
+            this.adj.get(pair.getFirst()).removeIf(edge -> edge.getTo().getId().equals(pair.getSecond().getId()));
             this.M--;
         }
         if (this.adj.containsKey(pair.getSecond())) {
-            this.adj.get(pair.getSecond()).removeIf(e -> e.getTo().getId().equals(pair.getFirst().getId()));
+            this.adj.get(pair.getSecond()).removeIf(edge -> edge.getTo().getId().equals(pair.getFirst().getId()));
+            this.M--;
         }
     }
 
