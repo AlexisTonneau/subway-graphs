@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class Graph {
     private int N = 0;                // number of nodes
     private int M = 0;                // number of edges
-    Map<Node, List<Edge>> adj = new HashMap<>();    // adjency list
+    Map<Node, List<Edge>> adj = new HashMap<>();    // adjacency list
 
     /**
      * Add a Node to adj
@@ -106,7 +106,7 @@ public class Graph {
         for (Pair<Node, Node> pair : allPairsOfNodes) {
             List<Node> shortestPath;
             if (useDijkstra) {
-                dijkstra.dikstraSP(this, pair.getFirst());
+                dijkstra.dijkstraSP(this, pair.getFirst());
                 shortestPath = dijkstra.getShortestPath(pair.getSecond());
             } else {
                 bfsShortestPaths.bfs(this, pair.getFirst());
@@ -127,7 +127,7 @@ public class Graph {
         Map<Pair<Node, Node>, List<Node>> allShortestPaths = this.findAllShortestPaths(useDijkstra);
         Map<Pair<Node, Node>, Integer> allEdgeBetweennesses = new HashMap<>();
 
-        // get number of times the path between two nodes is used
+        // Get of often the path between two nodes is taken
         for (Map.Entry<Pair<Node, Node>, List<Node>> entry : allShortestPaths.entrySet()){
             if (Objects.nonNull(entry.getValue())) {
                 for (int i = 0; i < entry.getValue().size() - 1; i++) {

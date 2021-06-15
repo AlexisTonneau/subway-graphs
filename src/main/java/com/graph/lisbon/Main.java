@@ -42,7 +42,7 @@ public class Main {
         Dijkstra dijkstra = new Dijkstra();
         Node weightedStart = weightedGraph.findNodeById("M13");
         Node weightedTarget = weightedGraph.findNodeById("M21");
-        dijkstra.dikstraSP(weightedGraph, weightedStart);
+        dijkstra.dijkstraSP(weightedGraph, weightedStart);
         System.out.println("========== DIJKSTRA SHORTEST PATH ==========\n\n" +
                 "The Dijkstra of the weighted graph allows us to find the shortest path between " + weightedStart.getId() + " and " + weightedTarget.getId() + ":\n");
         dijkstra.printShortestPath(dijkstra.getShortestPath(weightedTarget));
